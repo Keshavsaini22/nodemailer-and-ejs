@@ -49,7 +49,7 @@ function sendEmailGeneral(to,subject){
         //   }
         // ]
       }
-      const sendMail = async (transporter, mailOptions) => {
+      const sendMaill = async (transporter, mailOptions) => {
         try {
           await transporter.verify();
           await transporter.sendMail(mailOptions);
@@ -58,13 +58,32 @@ function sendEmailGeneral(to,subject){
           console.log('error: ', error);
         }
       }
-      sendMail(transporter,mailOptions);
+      sendMaill(transporter,mailOptions);
     }
   })
 }
 
-// sendEmailGeneral("keshav.1147@zenmonk.tech","Hello Bhai ✔")
+async function sendEmail(to,subject){
+  try {
+    const template=await ejs.renderFile(__dirname + '/views/welcome.ejs',{username:"Keshav"})
+    const mailOptions={
+      from: {
+        name: 'Keshav Saini',
+        address: 'keshav.zenmonk@outlook.com'
+      },
+      to,
+      subject,
+      html:template
+    }
+    await transporter.sendMail(mailOptions);
+    console.log("success!")
+  } catch (error) {
+    console.log('error: ', error);    
+  }
+}
 
+// sendEmailGeneral("keshav.1147@zenmonk.tech","Hello Bhai ✔")
+// sendEmail("keshav.1147@zenmonk.tech","Hello Bhai ✔")
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
